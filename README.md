@@ -2,6 +2,12 @@
 
 See `freight-rate-ml-assessment.pdf` for the original assessment instructions.
 
+## Submission
+
+- Loom walkthrough: https://www.loom.com/share/440c164c2f4b4aa38ca25eb098dfa8c4
+- Report: `report.pdf`
+- Predictions: `validation_predictions.csv`, `december_predictions.csv`
+
 ## Repo layout
 
 - `freight_rate_prediction.ipynb` - all solution code: EDA, data cleaning, model comparison, final model, and generation of both submission files.

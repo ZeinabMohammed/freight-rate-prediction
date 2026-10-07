@@ -4,7 +4,7 @@ See `freight-rate-ml-assessment.pdf` for the original assessment instructions.
 
 ## Repo layout
 
-- `test.ipynb` - all solution code: EDA, data cleaning, model comparison, final model, and generation of both submission files.
+- `freight_rate_prediction.ipynb` - all solution code: EDA, data cleaning, model comparison, final model, and generation of both submission files.
 - `train-test.csv` - labeled development data (48,000 loads, Jan-Oct 2025).
 - `validation.csv` / `validation-predictions-template.csv` - the 12,000 loads to predict, and the template for the output.
 - `december-chart-inputs.csv` - fixed-route December inputs to predict (date is the only thing that varies).
@@ -21,11 +21,11 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-`requirements.txt` covers both the scorer and the modeling notebook (pandas, numpy, matplotlib, scikit-learn). You'll also need Jupyter to open `test.ipynb`, or run it headless:
+`requirements.txt` covers both the scorer and the modeling notebook (pandas, numpy, matplotlib, scikit-learn). You'll also need Jupyter to open `freight_rate_prediction.ipynb`, or run it headless:
 
 ```bash
 pip install jupyter nbconvert
-jupyter nbconvert --to notebook --execute --inplace test.ipynb
+jupyter nbconvert --to notebook --execute --inplace freight_rate_prediction.ipynb
 ```
 
 Running the notebook top-to-bottom reproduces both output files from scratch: it loads `train-test.csv`, fixes the weight sign-error bug and imputes missing values, compares a baseline/linear/random-forest/gradient-boosting model on a time-based holdout, retrains the chosen linear regression on the full labeled set, and writes `validation_predictions.csv` and `december_predictions.csv`.

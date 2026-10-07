@@ -1,25 +1,44 @@
 # Freight Rate Prediction Challenge
 
-See `Freight_Rate_ML_Assessment.pdf` for the assessment instructions.
+See `freight-rate-ml-assessment.pdf` for the original assessment instructions.
 
-## What to do
+## Repo layout
 
-1. Train and validate your model using `data/train_test.csv`.
-2. Predict every load in `data/validation.csv`. Each load has a unique `load_id`.
-3. Fill the matching `predicted_rate` values in `data/validation_predictions_template.csv` and save it as `validation_predictions.csv`.
-4. Predict every row in `data/december_chart_inputs.csv` by filling its `predicted_rate` column.
-5. Install the scorer requirements and run:
+- `test.ipynb` - all solution code: EDA, data cleaning, model comparison, final model, and generation of both submission files.
+- `train-test.csv` - labeled development data (48,000 loads, Jan-Oct 2025).
+- `validation.csv` / `validation-predictions-template.csv` - the 12,000 loads to predict, and the template for the output.
+- `december-chart-inputs.csv` - fixed-route December inputs to predict (date is the only thing that varies).
+- `score.py` / `requirements.txt` - the scorer provided with the assessment; validates output format and renders the December chart.
+- `validation_predictions.csv` - final output: `load_id,predicted_rate` for all 12,000 validation loads.
+- `december_predictions.csv` - final output: the December inputs with `predicted_rate` filled in.
+- `report.pdf` - validation/split approach, model comparison, and the December chart.
+
+## Setup
 
 ```bash
-python -m pip install -r requirements.txt
-python score.py --predictions validation_predictions.csv --december-predictions data/december_chart_inputs.csv
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
 ```
 
-The scorer validates both files and creates `scorer_results/candidate_december.png`.
+`requirements.txt` covers both the scorer and the modeling notebook (pandas, numpy, matplotlib, scikit-learn). You'll also need Jupyter to open `test.ipynb`, or run it headless:
 
-## Submit
+```bash
+pip install jupyter nbconvert
+jupyter nbconvert --to notebook --execute --inplace test.ipynb
+```
 
-- GitHub repository containing your code, dependencies, and run instructions
-- `validation_predictions.csv`
-- PDF or DOCX report containing your validation, data split approach and `candidate_december.png`
-- 2-3 minute Loom link
+Running the notebook top-to-bottom reproduces both output files from scratch: it loads `train-test.csv`, fixes the weight sign-error bug and imputes missing values, compares a baseline/linear/random-forest/gradient-boosting model on a time-based holdout, retrains the chosen linear regression on the full labeled set, and writes `validation_predictions.csv` and `december_predictions.csv`.
+
+## Validate the output
+
+```bash
+python score.py --predictions validation_predictions.csv --december-predictions december_predictions.csv
+```
+
+This checks both files against the required format and regenerates `scorer_results/candidate_december.png` (the chart included in `report.pdf`).
+
+## Notes
+
+- Model choice and validation methodology are explained in `report.pdf`.
+- `scorer_results/` is gitignored - rerun the command above to regenerate it.
